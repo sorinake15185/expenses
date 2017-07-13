@@ -3,20 +3,10 @@ var router = express.Router();
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 
-var User = require('../models/user');
-
-// Register
-router.get('/register', function(req, res){
-	res.render('register');
-});
-
-// Login
-router.get('/login', function(req, res){
-	res.render('login');
-});
+var User = require('../../models/user');
 
 // Register User
-router.post('/register', function(req, res){
+router.post('/', function(req, res){
 	var name = req.body.name;
 	var email = req.body.email;
 	var username = req.body.username;
@@ -44,13 +34,11 @@ router.post('/register', function(req, res){
 		});
 
 		User.createUser(newUser, function(err, user){
-			if(err) throw err;
+			if(err)
+				throw err;
 			console.log(user);
+			res.send(user);
 		});
-
-		req.flash('success_msg', 'You are registered and can now login');
-
-		res.redirect('/users/login');
 	}
 });
 
